@@ -17,25 +17,55 @@ const Net = ({ x1, y1, x2, y2 }: NetProps) => {
   const controlX2 = (midX + x2) / 2;
   const controlY2 = (midY + y2) / 2 + 10;
   
+  // Define net width and height
+  const netWidth = x2 - x1;
+  const netHeight = 50;
+  const netBottomY = midY + 20;
+  
   // Create net pattern
-  const numVerticalLines = 15;
   const netLines = [];
   
   // Add the main top line of the net
-  const topPath = `M${x1} ${y1} Q ${midX} ${midY + 10}, ${x2} ${y2}`;
+  const topPath = `M${x1} ${y1} Q ${midX} ${midY - 10}, ${x2} ${y2}`;
   netLines.push(<path key="top" d={topPath} fill="none" stroke="#cbd5e1" strokeWidth="3" />);
   
+  // Ropes from sensors to top of net
+  netLines.push(
+    <line 
+      key="rope1" 
+      x1={x1} 
+      y1={y1} 
+      x2={x1 + 10} 
+      y2={midY - 20}
+      stroke="#cbd5e1" 
+      strokeWidth="2" 
+    />
+  );
+  
+  netLines.push(
+    <line 
+      key="rope2" 
+      x1={x2} 
+      y1={y2} 
+      x2={x2 - 10} 
+      y2={midY - 20}
+      stroke="#cbd5e1" 
+      strokeWidth="2" 
+    />
+  );
+  
   // Add the bottom curved line of the net
-  const bottomPath = `M${x1} ${y1+10} Q ${midX} ${midY + 25}, ${x2} ${y2+10}`;
+  const bottomPath = `M${x1 + 20} ${netBottomY} Q ${midX} ${netBottomY + 15}, ${x2 - 20} ${netBottomY}`;
   netLines.push(<path key="bottom" d={bottomPath} fill="none" stroke="#cbd5e1" strokeWidth="2" />);
   
   // Create vertical lines for the net
+  const numVerticalLines = 10;
   for (let i = 0; i <= numVerticalLines; i++) {
     const t = i / numVerticalLines;
-    const topX = x1 + (x2 - x1) * t;
-    const topY = y1 + (y2 - y1) * t + Math.sin(t * Math.PI) * 20;
+    const topX = x1 + netWidth * t;
+    const topY = midY - 10 + Math.sin(t * Math.PI) * 10;
     const bottomX = topX;
-    const bottomY = topY + 10 + Math.sin(t * Math.PI) * 5;
+    const bottomY = netBottomY;
     
     netLines.push(
       <line 
@@ -46,15 +76,16 @@ const Net = ({ x1, y1, x2, y2 }: NetProps) => {
         y2={bottomY} 
         stroke="#cbd5e1" 
         strokeWidth="1.5"
-        strokeDasharray="3,2"
+        strokeDasharray="5,3"
       />
     );
   }
   
   // Create horizontal lines for the net
-  for (let j = 0; j < 3; j++) {
-    const factor = (j + 1) / 4;
-    const horizontalPath = `M${x1} ${y1 + 10 * factor} Q ${midX} ${midY + 10 * factor + 5}, ${x2} ${y2 + 10 * factor}`;
+  for (let j = 1; j < 4; j++) {
+    const factor = j / 4;
+    const horizontalY = midY - 10 + factor * (netBottomY - (midY - 10));
+    const horizontalPath = `M${x1 + 20} ${horizontalY} Q ${midX} ${horizontalY + 5}, ${x2 - 20} ${horizontalY}`;
     
     netLines.push(
       <path 

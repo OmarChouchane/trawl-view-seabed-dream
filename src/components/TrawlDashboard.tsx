@@ -13,7 +13,7 @@ import TrawlCharts from '@/components/trawl/TrawlCharts';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import { Slider } from '@/components/ui/slider';
-import { Anchor, Waves, HelpCircle, ArrowDown, ArrowUp, Gauge } from 'lucide-react';
+import { Anchor, Waves, Ship, ArrowDown, ArrowUp, Gauge } from 'lucide-react';
 
 const TrawlDashboard = () => {
   const { toast } = useToast();
@@ -24,6 +24,7 @@ const TrawlDashboard = () => {
   const [boatMovement, setBoatMovement] = useState(0);
   const [winchStatus, setWinchStatus] = useState<'idle' | 'lifting' | 'lowering'>('idle');
   const [historyData, setHistoryData] = useState<any[]>([]);
+  const [winchSpeed, setWinchSpeed] = useState(2.5);
 
   // Generate initial historical data
   useEffect(() => {
@@ -125,16 +126,43 @@ const TrawlDashboard = () => {
   const currentSeabedDistance = seabedDepth - Math.max(sensor1Depth, sensor2Depth);
 
   return (
-    <div className="container py-6 max-w-7xl">
-      <h1 className="text-3xl font-bold mb-6 flex items-center gap-2">
-        <Anchor className="text-primary" />
-        Smart Trawl Gear Dashboard
-      </h1>
+    <div className="container py-6 max-w-full px-6">
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold flex items-center gap-2 text-white">
+          <Ship className="text-blue-400" />
+          Smart Trawl Control System
+        </h1>
+        
+        <div className="flex items-center gap-4 text-white">
+          <span className="flex items-center gap-2">
+            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+            <span className="text-sm">Captain Smith</span>
+          </span>
+          
+          <Button 
+            onClick={toggleSimulation} 
+            variant="outline" 
+            size="sm"
+            className="border-slate-600 text-slate-200 hover:text-white hover:bg-slate-700"
+          >
+            {isSimulating ? "Stop Simulation" : "Start Simulation"}
+          </Button>
+        </div>
+      </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Main visualization panel - 6 columns on large screens */}
-        <Card className="lg:col-span-7 p-4 overflow-hidden">
-          <div className="relative w-full h-[500px] ocean-gradient rounded-md overflow-hidden">
+        {/* Main visualization panel - 8 columns on large screens */}
+        <Card className="lg:col-span-8 p-4 bg-slate-800/50 border-slate-700 text-white">
+          <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold">Real-Time Seabed Distance</h2>
+            <div className="flex gap-2">
+              <Button variant="outline" size="sm" className="border-slate-600 text-slate-200 hover:text-white hover:bg-slate-700">1H</Button>
+              <Button variant="outline" size="sm" className="border-slate-600 bg-slate-700 text-white">6H</Button>
+              <Button variant="outline" size="sm" className="border-slate-600 text-slate-200 hover:text-white hover:bg-slate-700">24H</Button>
+            </div>
+          </div>
+          
+          <div className="relative w-full h-[500px] ocean-dark-gradient rounded-md overflow-hidden">
             {/* SVG Visualization */}
             <svg 
               width="100%" 
@@ -148,6 +176,10 @@ const TrawlDashboard = () => {
               
               {/* Boat with position updates */}
               <Boat x={380 + boatMovement} y={40} />
+              
+              {/* Sensors */}
+              <Sensor x={300} y={sensor1Depth} id={1} depth={sensor1Depth} />
+              <Sensor x={500} y={sensor2Depth} id={2} depth={sensor2Depth} />
               
               {/* Ropes from boat to sensors */}
               <path 
@@ -166,11 +198,7 @@ const TrawlDashboard = () => {
                 className="rope"
               />
               
-              {/* Sensors */}
-              <Sensor x={300} y={sensor1Depth} id={1} depth={sensor1Depth} />
-              <Sensor x={500} y={sensor2Depth} id={2} depth={sensor2Depth} />
-              
-              {/* Net between sensors */}
+              {/* Net between sensors with ropes to net */}
               <Net x1={300} y1={sensor1Depth} x2={500} y2={sensor2Depth} />
               
               {/* Seabed */}
@@ -181,7 +209,7 @@ const TrawlDashboard = () => {
             <WaterEffect />
             
             {/* Current distance indicator */}
-            <div className="absolute bottom-4 right-4 bg-black/50 text-white px-4 py-2 rounded-md backdrop-blur-sm flex items-center gap-2 border border-white/10">
+            <div className="absolute bottom-4 right-4 bg-black/70 text-white px-4 py-2 rounded-md backdrop-blur-sm flex items-center gap-2 border border-white/10">
               <Gauge className="h-5 w-5" />
               <div>
                 <div className="text-xs opacity-70">Distance to seabed</div>
@@ -189,98 +217,47 @@ const TrawlDashboard = () => {
               </div>
             </div>
           </div>
-          
-          <div className="mt-4 flex justify-between text-sm text-muted-foreground">
-            <span>Real-time depth monitoring</span>
-            <span>Distance between sensors: {Math.round(Math.sqrt(Math.pow(500-300, 2) + Math.pow(sensor2Depth-sensor1Depth, 2)))}m</span>
-          </div>
         </Card>
         
-        {/* Right side control panels - 6 columns on large screens */}
-        <div className="lg:col-span-5 grid grid-cols-1 gap-6">
-          <WinchControl onWinchOperation={handleWinchOperation} />
-          
+        {/* Right side control panels - 4 columns on large screens */}
+        <div className="lg:col-span-4">
+          <WinchControl 
+            onWinchOperation={handleWinchOperation} 
+            status={winchStatus === 'idle' ? 'Active' : winchStatus === 'lifting' ? 'Lifting' : 'Lowering'}
+            speed={winchSpeed}
+          />
+        </div>
+        
+        {/* System Alerts - 4 columns */}
+        <Card className="lg:col-span-4 p-4 bg-slate-800/50 border-slate-700 text-white">
+          <h2 className="text-lg font-semibold mb-4">System Alerts</h2>
           <AlertsPanel 
             seabedDistance={currentSeabedDistance}
             seabedThreshold={30}
             initialAlerts={[
               {
-                id: 'system-1',
+                id: 'proximity-1',
+                type: 'warning',
+                message: 'Seabed distance below threshold',
+                timestamp: new Date(),
+                details: 'Current: 28m'
+              },
+              {
+                id: 'maintenance-1',
                 type: 'info',
-                message: 'System initialized and ready',
-                timestamp: new Date()
+                message: 'Maintenance Due',
+                timestamp: new Date(),
+                details: 'Schedule maintenance in 48 hours'
               }
             ]}
           />
-          
-          <div className="bg-slate-50 p-4 rounded-lg border">
-            <h3 className="font-medium mb-3 flex items-center">
-              <Waves className="mr-2 h-5 w-5 text-blue-500" />
-              Manual Controls
-            </h3>
-            <div className="space-y-5">
-              <div className="space-y-2">
-                <label className="text-sm font-medium flex justify-between">
-                  <span>Sensor 1 Depth: {sensor1Depth}m</span>
-                  <span className="text-muted-foreground text-xs">Min: 50m | Max: 200m</span>
-                </label>
-                <Slider 
-                  value={[sensor1Depth]} 
-                  min={50} 
-                  max={200}
-                  step={1}
-                  onValueChange={(value) => setSensor1Depth(value[0])}
-                  disabled={isSimulating}
-                  className="py-4"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium flex justify-between">
-                  <span>Sensor 2 Depth: {sensor2Depth}m</span>
-                  <span className="text-muted-foreground text-xs">Min: 80m | Max: 210m</span>
-                </label>
-                <Slider 
-                  value={[sensor2Depth]} 
-                  min={80} 
-                  max={210}
-                  step={1}
-                  onValueChange={(value) => setSensor2Depth(value[0])}
-                  disabled={isSimulating}
-                  className="py-4"
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium flex justify-between">
-                  <span>Seabed Depth: {seabedDepth}m</span>
-                  <span className="text-muted-foreground text-xs">Min: 150m | Max: 300m</span>
-                </label>
-                <Slider 
-                  value={[seabedDepth]} 
-                  min={150} 
-                  max={300}
-                  step={1}
-                  onValueChange={handleSeabedAdjust}
-                  className="py-4"
-                />
-              </div>
-              
-              <Button 
-                onClick={toggleSimulation} 
-                className="w-full"
-                variant={isSimulating ? "destructive" : "default"}
-              >
-                {isSimulating ? "Stop Simulation" : "Start Simulation"}
-              </Button>
-            </div>
-          </div>
-        </div>
+        </Card>
         
-        {/* Charts panel - full width */}
-        <div className="lg:col-span-12">
+        {/* Trend Analysis - 8 columns */}
+        <Card className="lg:col-span-8 p-4 bg-slate-800/50 border-slate-700 text-white">
+          <h2 className="text-lg font-semibold mb-4">Trend Analysis</h2>
           <TrawlCharts data={historyData} />
-        </div>
+        </Card>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { ArrowUp, ArrowDown, Pause } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 
@@ -10,94 +10,93 @@ type WinchStatus = 'idle' | 'lifting' | 'lowering' | 'maintenance';
 
 interface WinchControlProps {
   onWinchOperation: (operation: 'lift' | 'lower' | 'stop') => void;
+  status: string;
+  speed: number;
 }
 
-const WinchControl = ({ onWinchOperation }: WinchControlProps) => {
-  const [status, setStatus] = useState<WinchStatus>('idle');
+const WinchControl = ({ onWinchOperation, status, speed }: WinchControlProps) => {
   const [maintenanceMode, setMaintenanceMode] = useState(false);
 
   const handleOperation = (operation: 'lift' | 'lower' | 'stop') => {
     if (maintenanceMode) return;
-    
-    setStatus(operation === 'lift' ? 'lifting' : 
-              operation === 'lower' ? 'lowering' : 'idle');
-    
     onWinchOperation(operation);
   };
 
   const toggleMaintenance = () => {
-    if (status !== 'idle') {
-      handleOperation('stop');
-    }
+    handleOperation('stop');
     setMaintenanceMode(!maintenanceMode);
-    setStatus(maintenanceMode ? 'idle' : 'maintenance');
   };
 
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center justify-between text-lg">
-          Winch Control
-          <Badge 
-            variant={status === 'idle' ? "outline" : 
-                   status === 'maintenance' ? "destructive" : "default"}
-            className="ml-2"
-          >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-          </Badge>
-        </CardTitle>
+    <Card className="bg-slate-800/50 border-slate-700 text-white h-full">
+      <CardHeader className="border-b border-slate-700 pb-4">
+        <h2 className="text-lg font-semibold">Winch Control</h2>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
         {maintenanceMode && (
-          <Alert className="mb-4 bg-destructive/10 text-destructive border-destructive">
+          <Alert className="mb-4 bg-red-900/30 text-red-300 border border-red-900">
             <AlertDescription>
               Maintenance mode active. Controls disabled.
             </AlertDescription>
           </Alert>
         )}
         
-        <div className="grid grid-cols-3 gap-2">
-          <Button 
-            variant="outline" 
-            size="lg"
-            disabled={maintenanceMode || status === 'lifting'} 
-            onClick={() => handleOperation('lift')}
-            className="flex flex-col h-20 items-center justify-center bg-green-50 hover:bg-green-100 border-green-200"
-          >
-            <ArrowUp className="h-6 w-6 text-green-600" />
-            <span className="text-xs mt-1 text-green-700">Lift</span>
-          </Button>
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <div className="text-sm text-slate-400">Current Status</div>
+              <div className="text-lg font-medium">{status}</div>
+            </div>
+            
+            <div className="space-y-1">
+              <div className="text-sm text-slate-400">Speed</div>
+              <div className="text-lg font-medium">{speed} m/s</div>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <Button 
+              variant="outline" 
+              size="lg"
+              disabled={maintenanceMode} 
+              onClick={() => handleOperation('lift')}
+              className="h-16 border-slate-600 bg-slate-700/50 hover:bg-slate-600 text-white"
+            >
+              <ArrowUp className="mr-2 h-5 w-5" />
+              Lift
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              size="lg"
+              disabled={maintenanceMode} 
+              onClick={() => handleOperation('lower')}
+              className="h-16 border-slate-600 bg-slate-700/50 hover:bg-slate-600 text-white"
+            >
+              <ArrowDown className="mr-2 h-5 w-5" />
+              Lower
+            </Button>
+          </div>
           
           <Button 
             variant="outline" 
-            size="lg"
-            disabled={maintenanceMode || status === 'idle'}
-            onClick={() => handleOperation('stop')} 
-            className="flex flex-col h-20 items-center justify-center"
+            size="sm"
+            disabled={maintenanceMode} 
+            onClick={() => handleOperation('stop')}
+            className="w-full border-slate-600 hover:bg-slate-700 text-slate-300"
           >
-            <Pause className="h-6 w-6 text-gray-600" />
-            <span className="text-xs mt-1">Stop</span>
+            <Pause className="mr-2 h-4 w-4" />
+            Stop
           </Button>
           
           <Button 
-            variant="outline" 
-            size="lg"
-            disabled={maintenanceMode || status === 'lowering'} 
-            onClick={() => handleOperation('lower')}
-            className="flex flex-col h-20 items-center justify-center bg-blue-50 hover:bg-blue-100 border-blue-200"
+            variant={maintenanceMode ? "destructive" : "outline"} 
+            className="w-full border-slate-600 text-slate-300 hover:bg-slate-700"
+            onClick={toggleMaintenance}
           >
-            <ArrowDown className="h-6 w-6 text-blue-600" />
-            <span className="text-xs mt-1 text-blue-700">Lower</span>
+            {maintenanceMode ? "Exit Maintenance Mode" : "Enter Maintenance Mode"}
           </Button>
         </div>
-        
-        <Button 
-          variant={maintenanceMode ? "destructive" : "outline"} 
-          className="w-full mt-4"
-          onClick={toggleMaintenance}
-        >
-          {maintenanceMode ? "Exit Maintenance Mode" : "Enter Maintenance Mode"}
-        </Button>
       </CardContent>
     </Card>
   );
