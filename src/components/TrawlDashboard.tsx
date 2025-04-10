@@ -202,7 +202,7 @@ const TrawlDashboard = () => {
               <Net x1={300} y1={sensor1Depth} x2={500} y2={sensor2Depth} />
               
               {/* Seabed */}
-              <Seabed y={seabedDepth} />
+              <Seabed y={500} />
             </svg>
             
             {/* Water effect overlay */}
