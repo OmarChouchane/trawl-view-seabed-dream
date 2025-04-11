@@ -145,25 +145,27 @@
   animation: wave-deform 8s infinite ease-in-out;
   filter: 
     drop-shadow(0 2px 4px rgba(0,0,0,0.3))
-    url('#wave-filter'); /* SVG filter defined below */
+    url('#wave-filter');
   transform-origin: 50% 50%;
-  transform: rotate(70deg); /* Tilt the net */
+  /* remove rotate */
 }
+
 
 @keyframes wave-deform {
   0%, 100% {
-    transform: scaleY(0.98) scaleX(1.02) rotate(70deg); /* Maintain tilt during animation */
+    transform: scaleY(0.98) scaleX(1.02);
   }
   25% {
-    transform: scaleY(1.02) scaleX(0.98) rotate(70deg); /* Maintain tilt during animation */
+    transform: scaleY(1.02) scaleX(0.98);
   }
   50% {
-    transform: scaleY(0.99) scaleX(1.01) rotate(70deg); /* Maintain tilt during animation */
+    transform: scaleY(0.99) scaleX(1.01);
   }
   75% {
-    transform: scaleY(1.01) scaleX(0.99) rotate(70deg); /* Maintain tilt during animation */
+    transform: scaleY(1.01) scaleX(0.99);
   }
 }
+
 
 .rope {
   transition: d 0.5s ease-in-out;
