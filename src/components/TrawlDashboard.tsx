@@ -224,20 +224,20 @@ const TrawlDashboard = () => {
               <Net x1={400} y1={sensor1Depth} x2={500} y2={sensor2Depth} />
 
               {/* Seabed */}
-              <Seabed y={500} />
+              <Seabed y={500} width={1200} x={-200} /> 
             </svg>
 
             {/* Water effect overlay */}
             <WaterEffect />
 
             {/* Current distance indicator */}
-            <div className="absolute bottom-4 right-4 bg-black/70 text-white px-4 py-2 rounded-md backdrop-blur-sm flex items-center gap-2 border border-white/10">
-              <Gauge className="h-5 w-5" />
-              <div>
-                <div className="text-xs opacity-70">Distance to seabed</div>
-                <div className="text-xl font-bold">{Math.max(0, currentSeabedDistance) + 8}m</div>
-              </div>
-            </div>
+            <div className="absolute bottom-20 right-4 bg-black/70 text-white px-4 py-2 rounded-md backdrop-blur-sm flex items-center gap-2 border border-white/10">
+  <Gauge className="h-5 w-5" />
+  <div>
+    <div className="text-xs opacity-70">Distance to seabed</div>
+    <div className="text-xl font-bold">{Math.max(0, currentSeabedDistance) + 8}m</div>
+  </div>
+</div>
           </div>
         </Card>
 

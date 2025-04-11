@@ -1,23 +1,25 @@
-
 interface SeabedProps {
   y: number;
+  width?: number;
+  x?: number; // Add x position prop
 }
 
-const Seabed = ({ y }: SeabedProps) => {
+const Seabed = ({ y, width = 800, x = 0 }: SeabedProps) => {
   // Create a wavy seabed line
   const createWavyPath = () => {
-    const length = 100;
-    let path = `M0 ${y}`;
+    const segmentCount = 40;
+    const segmentWidth = width / segmentCount;
+    let path = `M${x} ${y}`;
     
     // Generate random bumps
-    for (let i = 0; i <= 40; i++) {
-      const x = i * 20;
+    for (let i = 0; i <= segmentCount; i++) {
+      const currentX = x + (i * segmentWidth);
       const bumpHeight = Math.random() * 8 + 15;
-      path += ` L${x} ${y + bumpHeight}`;
+      path += ` L${currentX} ${y + bumpHeight}`;
     }
     
     // Close the path
-    path += ` L${length} ${y + 600} L0 ${y + 600} Z`;
+    path += ` L${x + width} ${y + 600} L${x} ${y + 600} Z`;
     
     return path;
   };
@@ -32,17 +34,12 @@ const Seabed = ({ y }: SeabedProps) => {
         strokeWidth="1"
       />
       
-      {/* Small rocks on seabed */}
-      <circle cx="100" cy={y+10} r="5" fill="#78350f" />
-      <circle cx="350" cy={y+8} r="6" fill="#78350f" />
-      <circle cx="600" cy={y+7} r="4" fill="#78350f" />
-      <circle cx="200" cy={y+5} r="3" fill="#78350f" />
-      <circle cx="500" cy={y+9} r="5" fill="#78350f" />
-      <circle cx="700" cy={y+6} r="4" fill="#78350f" />
+
+      {/* Random rocks distributed across the width */}
       {Array.from({ length: 10 }).map((_, i) => (
         <circle 
           key={`rock-${i}`}
-          cx={Math.random() * 1000} 
+          cx={x + Math.random() * width} 
           cy={y + 50 + Math.random() * 10} 
           r={2 + Math.random() * 8} 
           fill="#78350f" 
@@ -51,10 +48,10 @@ const Seabed = ({ y }: SeabedProps) => {
       
       {/* Define gradient for seabed */}
       <defs>
-      <linearGradient id="seabed-gradient" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stopColor="#5a2e0a" />  {/* Darker brown */}
-        <stop offset="100%" stopColor="#3d2006" /> {/* Darker brown */}
-      </linearGradient>
+        <linearGradient id="seabed-gradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#5a1e07" />
+          <stop offset="10%" stopColor="#2a1e07" />
+        </linearGradient>
       </defs>
     </g>
   );
