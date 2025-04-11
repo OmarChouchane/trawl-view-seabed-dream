@@ -16,7 +16,7 @@ const Sensor = ({ x, y, id, depth }: SensorProps) => {
         r="15" 
         fill="#f97316" 
         stroke="#7c2d12" 
-        strokeWidth="2" 
+        strokeWidth="1" 
         className="animate-depth-pulse"
       />
       
@@ -63,7 +63,7 @@ const Sensor = ({ x, y, id, depth }: SensorProps) => {
           fontWeight="semibold"
           fill="#0f172a"
         >
-          {depth}m
+          {depth/10 - 16}m
         </text>
       </g>
       

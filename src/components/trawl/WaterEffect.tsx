@@ -4,7 +4,7 @@ const WaterEffect = () => {
     <div className="absolute inset-0 z-0">
       {/* Water texture overlay */}
       <div className="absolute inset-0 opacity-20 animate-water-movement">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+        <svg width="2000" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <pattern id="water-pattern" width="100" height="100" patternUnits="userSpaceOnUse">
               <path 
