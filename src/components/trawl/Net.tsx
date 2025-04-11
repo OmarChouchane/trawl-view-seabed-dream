@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 interface NetProps {
   x1: number;
@@ -12,18 +12,8 @@ const Net = ({ x1, y1, x2, y2 }: NetProps) => {
   const width = 150;
   const height = 300;
 
-  // Use ref to store the initial horizontal position
-  const initialXRef = useRef<number | null>(null);
-  
-  // Calculate net position
-  const averageX = (x1 + x2) / 2;
-  
-  // Set initial horizontal position only once
-  if (initialXRef.current === null) {
-    initialXRef.current = averageX - width/2;
-  }
-  
-  const netX = initialXRef.current; // Always use the initial horizontal position
+  // Calculate net position (top center of the net)
+  const netX = (x1 + x2) / 2 - width/2;
   const netY = Math.max(y1, y2) + 100; // Fixed distance below sensors
 
   // Attachment points on the net (relative to net position)
