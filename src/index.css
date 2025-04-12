@@ -185,3 +185,5 @@
 .rope:nth-child(even) {
   animation: rope-sway 5s ease-in-out infinite 1s;
 }
+
+

@@ -19,7 +19,7 @@ const TrawlDashboard = () => {
   const [sensor1Depth, setSensor1Depth] = useState(230);
   const [sensor2Depth, setSensor2Depth] = useState(250);
   const [isSimulating, setIsSimulating] = useState(false);
-  const [seabedDepth, setSeabedDepth] = useState(220);
+  const [seabedDepth, setSeabedDepth] = useState(260);
   const [winchStatus, setWinchStatus] = useState<'idle' | 'lifting' | 'lowering'>('idle');
   const [historyData, setHistoryData] = useState<any[]>([]);
   const [winchSpeed, setWinchSpeed] = useState(2.5);
@@ -35,9 +35,14 @@ const TrawlDashboard = () => {
         sensor1Depth: Math.floor(100 + Math.random() * 50),
         sensor2Depth: Math.floor(160 + Math.random() * 50),
         seabedDistance: Math.floor(30 + Math.random() * 20),
+        
       };
     });
-
+    console.log("Seabed Depth:", seabedDepth);
+    console.log("Sensor 1 Depth:", sensor1Depth);
+    console.log("Sensor 2 Depth:", sensor2Depth);
+    console.log("Current Seabed Distance:", currentSeabedDistance);
+    
     setHistoryData(initialData);
   }, []);
 
@@ -51,11 +56,11 @@ const TrawlDashboard = () => {
         let newSensor2Depth = sensor2Depth;
 
         if (winchStatus === 'lifting') {
-          newSensor1Depth = Math.max(50, sensor1Depth - 10);
-          newSensor2Depth = Math.max(80, sensor2Depth - 10);
+          newSensor1Depth = Math.max(50, sensor1Depth - 0.5);
+          newSensor2Depth = Math.max(80, sensor2Depth - 0.5);
         } else if (winchStatus === 'lowering') {
-          newSensor1Depth = Math.min(200, sensor1Depth + 10);
-          newSensor2Depth = Math.min(210, sensor2Depth + 10);
+          newSensor1Depth = Math.min(200, sensor1Depth + 0.5);
+          newSensor2Depth = Math.min(210, sensor2Depth + 0.5);
         } else {
           // Random slight movements when idle
           newSensor1Depth = Math.max(50, Math.min(200, sensor1Depth + (Math.random() * 6) - 3));
@@ -80,7 +85,7 @@ const TrawlDashboard = () => {
           }
         ]);
 
-      }, 2000);
+      }, 10);
     }
 
     return () => {
@@ -235,7 +240,7 @@ const TrawlDashboard = () => {
   <Gauge className="h-5 w-5" />
   <div>
     <div className="text-xs opacity-70">Distance to seabed</div>
-    <div className="text-xl font-bold">{Math.max(0, currentSeabedDistance) + 8}m</div>
+    <div className="text-xl font-bold">{Math.max(0, currentSeabedDistance)}m</div>
   </div>
 </div>
           </div>
