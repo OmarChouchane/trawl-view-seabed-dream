@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
@@ -24,6 +23,16 @@ const TrawlCharts = ({ data }: TrawlChartsProps) => {
     return timestamp;
   };
 
+  // Format all depth values to one decimal place
+  const formatDepth = (value: number) => {
+    return parseFloat(value.toFixed(1));
+  };
+
+  // Format tooltip values
+  const formatTooltipValue = (value: number, name: string) => {
+    return [`${formatDepth(value)}m`, name];
+  };
+
   // Configure chart colors
   const chartConfig = {
     sensor1: {
@@ -38,6 +47,23 @@ const TrawlCharts = ({ data }: TrawlChartsProps) => {
       label: 'Seabed Distance',
       color: '#f59e0b', // amber
     }
+  };
+
+  // Custom tooltip component to ensure consistent formatting
+  const CustomTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+      return (
+        <div className="bg-slate-800 border border-slate-700 rounded-md p-2">
+          <p className="text-sm text-slate-300">{label}</p>
+          {payload.map((entry: any, index: number) => (
+            <p key={`tooltip-${index}`} className="text-sm" style={{ color: entry.color }}>
+              {`${entry.name}: ${formatDepth(entry.value)}m`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
   };
 
   return (
@@ -60,13 +86,13 @@ const TrawlCharts = ({ data }: TrawlChartsProps) => {
                   tickLine={{ stroke: '#6b7280' }}
                 />
                 <YAxis 
-                  tickFormatter={(value) => `${value}m`} 
+                  tickFormatter={(value) => `${formatDepth(value)}m`} 
                   domain={['dataMin - 20', 'dataMax + 20']} 
                   tick={{ fontSize: 10, fill: '#9ca3af' }}
                   axisLine={{ stroke: '#6b7280' }}
                   tickLine={{ stroke: '#6b7280' }}
                 />
-                <Tooltip content={<ChartTooltipContent hideLabel={false} />} />
+                <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '10px', color: '#9ca3af' }} />
                 <Line 
                   type="monotone" 
@@ -110,13 +136,13 @@ const TrawlCharts = ({ data }: TrawlChartsProps) => {
                   tickLine={{ stroke: '#6b7280' }}
                 />
                 <YAxis 
-                  tickFormatter={(value) => `${value}m`}
+                  tickFormatter={(value) => `${formatDepth(value)}m`}
                   domain={[0, 'dataMax + 20']}
                   tick={{ fontSize: 10, fill: '#9ca3af' }}
                   axisLine={{ stroke: '#6b7280' }}
                   tickLine={{ stroke: '#6b7280' }}
                 />
-                <Tooltip content={<ChartTooltipContent hideLabel={false} />} />
+                <Tooltip content={<CustomTooltip />} />
                 <Legend wrapperStyle={{ fontSize: '10px', color: '#9ca3af' }} />
                 <Line 
                   type="monotone" 

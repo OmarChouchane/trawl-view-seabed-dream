@@ -13,7 +13,12 @@ const DepthMarkers = ({ boatY }: { boatY: number }) => {
     spacing: 105,     // Vertical spacing between lines
     count: 5,         // Number of depth lines
     startDepth: 0,    // 0m at boat level
-    depthStep: 4      // Depth increment per line
+    depthStep: 4.0    // Depth increment per line (now a float)
+  };
+
+  // Helper function to format depth with one decimal place
+  const formatDepth = (depth: number) => {
+    return depth === 0 ? '0m' : `${depth.toFixed(1)}m`;
   };
 
   // Generate wavy path for the boat level line
@@ -30,11 +35,15 @@ const DepthMarkers = ({ boatY }: { boatY: number }) => {
     return path;
   };
 
-  // Calculate markers
-  const markers = Array.from({ length: config.count }, (_, i) => ({
-    yPos: config.boatY + (i * config.spacing),
-    depth: config.startDepth + (i * config.depthStep)
-  }));
+  // Calculate markers with formatted depth values
+  const markers = Array.from({ length: config.count }, (_, i) => {
+    const depth = config.startDepth + (i * config.depthStep);
+    return {
+      yPos: config.boatY + (i * config.spacing),
+      depth,
+      formattedDepth: formatDepth(depth)
+    };
+  });
 
   return (
     <g className="depth-markers">
@@ -93,7 +102,7 @@ const DepthMarkers = ({ boatY }: { boatY: number }) => {
                 fontWeight={isMajorLine ? "500" : "400"}
                 opacity={isMajorLine ? 0.8 : 0.6}
               >
-                {marker.depth}m
+                {marker.formattedDepth}
               </text>
             )}
           </g>

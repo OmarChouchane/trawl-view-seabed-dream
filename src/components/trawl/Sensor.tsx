@@ -1,4 +1,3 @@
-
 interface SensorProps {
   x: number;
   y: number;
@@ -7,6 +6,12 @@ interface SensorProps {
 }
 
 const Sensor = ({ x, y, id, depth }: SensorProps) => {
+  // Format depth to one decimal place
+  const formatDepth = (value: number) => {
+    const formattedValue = (value / 10 - 16).toFixed(1);
+    return `${formattedValue}m`;
+  };
+
   return (
     <g>
       {/* Sensor body */}
@@ -63,7 +68,7 @@ const Sensor = ({ x, y, id, depth }: SensorProps) => {
           fontWeight="semibold"
           fill="#0f172a"
         >
-          {depth/10 - 16}m
+          {formatDepth(depth)}
         </text>
       </g>
       
