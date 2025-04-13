@@ -20,7 +20,7 @@ const TrawlDashboard = () => {
   // Configuration using distance from seabed
   const depthConfig = {
     seabedDepth: 15,          // Static seabed depth in meters
-    minDistance: 10,           // Minimum distance from seabed (1m)
+    minDistance: 11,           // Minimum distance from seabed (1m)
     maxDistance: 20,          // Maximum distance from seabed (seabedDepth - minDepth)
     minSafeDistance: 1.5        // Minimum safe distance to seabed
   };
@@ -193,11 +193,12 @@ const TrawlDashboard = () => {
         </Card>
 
         <div className="lg:col-span-4">
-          <WinchControl
-            onWinchOperation={handleWinchOperation}
-            status={winchStatus === 'idle' ? 'Active' : winchStatus === 'lifting' ? 'Lifting' : 'Lowering'}
-            speed={winchSpeed}
-          />
+        <WinchControl
+  onWinchOperation={handleWinchOperation}
+  status={winchStatus === 'idle' ? 'Active' : winchStatus === 'lifting' ? 'Lifting' : 'Lowering'}
+  speed={winchSpeed}
+  seabedDistance={Number(currentSeabedDistance)} // Pass the real-time seabed distance
+/>
         </div>
 
         <Card className="lg:col-span-4 p-4 bg-slate-800/50 border-slate-700 text-white">
@@ -225,7 +226,7 @@ const TrawlDashboard = () => {
         </Card>
 
         <Card className="lg:col-span-8 p-4 bg-slate-800/50 border-slate-700 text-white">
-          <h2 className="text-lg font-semibold mb-4">Trend Analysis</h2>
+          <h2 className="text-lg font-semibold mb-4">TrawlMap</h2>
           <TrawlCharts 
  
           />
