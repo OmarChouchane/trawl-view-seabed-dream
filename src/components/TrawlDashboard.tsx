@@ -227,8 +227,7 @@ const TrawlDashboard = () => {
         <Card className="lg:col-span-8 p-4 bg-slate-800/50 border-slate-700 text-white">
           <h2 className="text-lg font-semibold mb-4">Trend Analysis</h2>
           <TrawlCharts 
-            data={historyData} 
-            maxDepth={depthConfig.seabedDepth}
+ 
           />
         </Card>
       </div>
