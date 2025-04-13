@@ -22,11 +22,11 @@ const WinchControl = ({ onWinchOperation, speed, seabedDistance }: WinchControlP
 
   // Update safety status based on seabed distance
   useEffect(() => {
-    if (seabedDistance < 1) {
+    if (seabedDistance < 1.5) {
       setSafetyStatus('Emergency');
       // Auto-trigger lifting in emergency situations
       if (!isManualMode) handleOperation('lift');
-    } else if (seabedDistance < 1.5) {
+    } else if (seabedDistance < 2.5) {
       setSafetyStatus('Warning');
     } else {
       setSafetyStatus('Safe');
