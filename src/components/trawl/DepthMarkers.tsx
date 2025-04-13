@@ -4,6 +4,7 @@ interface DepthMarkerConfig {
   count: number;      // Total number of lines
   startDepth: number; // Starting depth in meters (0 = at boat)
   depthStep: number;  // Depth increment per line (meters)
+  maxDepth?: number;
 }
 
 const DepthMarkers = ({ boatY }: { boatY: number }) => {
@@ -13,7 +14,7 @@ const DepthMarkers = ({ boatY }: { boatY: number }) => {
     spacing: 105,     // Vertical spacing between lines
     count: 5,         // Number of depth lines
     startDepth: 0,    // 0m at boat level
-    depthStep: 4.0    // Depth increment per line (now a float)
+    depthStep: 2.5    // Depth increment per line (now a float)
   };
 
   // Helper function to format depth with one decimal place

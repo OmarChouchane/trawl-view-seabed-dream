@@ -49,12 +49,12 @@ const AlertsPanel = ({ seabedDistance, seabedThreshold, initialAlerts = [] }: Al
         type: 'warning',
         message: 'Seabed distance below threshold',
         timestamp: new Date(),
-        details: `Current: ${seabedDistance}m`
+        details: `Current: under ${seabedDistance}m`
       };
       
       setAlerts(prev => [newAlert, ...prev]);
     }
-    else if (seabedDistance > seabedThreshold + 5 && hasProximityWarning) {
+    else if (seabedDistance > seabedThreshold && hasProximityWarning) {
       // Remove proximity warning when distance is safe again
       setAlerts(prev => prev.filter(alert => !alert.id.includes('proximity')));
       
@@ -64,7 +64,7 @@ const AlertsPanel = ({ seabedDistance, seabedThreshold, initialAlerts = [] }: Al
         type: 'success',
         message: 'Safe distance from seabed',
         timestamp: new Date(),
-        details: `Current: ${seabedDistance}m`
+        details: `Current: over ${seabedDistance}m`
       };
       
       setAlerts(prev => [newAlert, ...prev]);
