@@ -45,22 +45,7 @@ Sensors (Ultrasonic, Gyro, GPS)
            ↓
 Electro-Hydraulic Winch Control
 ```
----
 
-## 🚀 Getting Started
-
-1. Clone the repo
-
-git clone https://github.com/OmarChouchane/trawl-view-seabed-dream.git
-cd trawl-view-seabed-dream
-
-2. Dashboard (React)
-
-cd dashboard
-npm install
-npm start
-
----
 ---
 
 ## 🎯 Expected Impact
