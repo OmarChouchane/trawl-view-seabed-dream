@@ -1,73 +1,80 @@
-# Welcome to your Lovable project
+# SafeCatch – Smart Trawl Gear Uplifting System 🐟⚙️
 
-## Project info
+**Combating Illegal Kiss Trawling in Tunisia with Smart Embedded Tech**
 
-**URL**: https://lovable.dev/projects/e3c7d355-9b99-4e0d-a23f-344a4cbeb099
+![SafeCatch Dashboard](./images/dashboard_screenshot.png) <!-- Replace with your actual image path -->
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🌍 Project Overview
 
-**Use Lovable**
+**SafeCatch** is an intelligent trawling assistant system designed to combat illegal kiss trawling along Tunisia’s coast. The system uses real-time seabed proximity sensing to **autonomously control net depth**, helping reduce seabed damage and marine bycatch.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/e3c7d355-9b99-4e0d-a23f-344a4cbeb099) and start prompting.
+Developed as part of the **IEEE SIGHT SDC Tech Challenge 2025**, the project combines **hardware, software, and IoT** to empower fishermen with a sustainable, affordable alternative to destructive trawling practices.
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 🛠️ Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 🔧 Hardware:
+- **Ultrasonic Sensor** (e.g., JSN-SR04T): Measures distance to seabed.
+- **Gyroscope (MPU6050)**: Compensates tilt for accurate seabed measurement.
+- **Microcontroller (ESP32/Arduino)**: Core logic and MQTT communication.
+- **Electro-Hydraulic Valve**: Automates net lifting.
+- **GPS Module**: For mapping and depth memory optimization.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 💻 Software:
+- **Real-Time Dashboard** (React.js + MQTT.js)
+- Live seabed distance monitoring
+- Boat + net animations
+- Manual/auto winch control
+- GPS tracking & playback
+- System alerts & maintenance logs
 
-Follow these steps:
+---
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 📊 System Architecture
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```plaintext
+Sensors (Ultrasonic, Gyro, GPS)
+           ↓
+      Microcontroller
+           ↓
+  MQTT ↔ Dashboard UI
+           ↓
+Electro-Hydraulic Winch Control
 ```
+---
 
-**Edit a file directly in GitHub**
+## 🚀 Getting Started
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Clone the repo
 
-**Use GitHub Codespaces**
+git clone https://github.com/OmarChouchane/trawl-view-seabed-dream.git
+cd trawl-view-seabed-dream
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2. Dashboard (React)
 
-## What technologies are used for this project?
+cd dashboard
+npm install
+npm start
 
-This project is built with:
+---
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🎯 Expected Impact
 
-## How can I deploy this project?
+🔻 85% reduction in seagrass destruction
 
-Simply open [Lovable](https://lovable.dev/projects/e3c7d355-9b99-4e0d-a23f-344a4cbeb099) and click on Share -> Publish.
+🐠 77% reduction in bycatch
 
-## Can I connect a custom domain to my Lovable project?
+🤝 High adoption potential by small-scale fishers
 
-Yes it is!
+---
+## 🌐 Connect With Us
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+📬 Contact: omar.chouchane@insat.ucar.tn
+🌐 LinkedIn: Omar Chouchane
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+
+
