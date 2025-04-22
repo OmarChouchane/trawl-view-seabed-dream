@@ -2,7 +2,8 @@
 
 **Combating Illegal Kiss Trawling in Tunisia with Smart Embedded Tech**
 
-![SafeCatch Dashboard](./images/dashboard_screenshot.png) <!-- Replace with your actual image path -->
+![SafeCatch Dashboard](https://github.com/user-attachments/assets/b26dbac4-c367-4b0b-973a-b89e98674967)
+
 
 ---
 
